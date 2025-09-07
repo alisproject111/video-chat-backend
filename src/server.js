@@ -23,7 +23,7 @@ app.use(
       process.env.NODE_ENV === "production"
         ? [
             "https://video-chat-backend-lake.vercel.app", // Your backend domain
-            "https://your-frontend-app.vercel.app", // Replace with your actual frontend domain
+            "https://alis-video-chat.vercel.app", // Replace with your actual frontend domain
             "https://localhost:3000", // For local frontend development
           ]
         : "http://localhost:5173",
