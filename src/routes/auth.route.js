@@ -4,6 +4,23 @@ import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 
+router.use((req, res, next) => {
+  console.log(`[v0] Auth route accessed: ${req.method} ${req.path}`)
+  console.log(`[v0] Full URL: ${req.originalUrl}`)
+  console.log(`[v0] Headers:`, req.headers)
+  next()
+})
+
+router.get("/test-auth", (req, res) => {
+  console.log("[v0] Auth test route hit successfully")
+  res.json({
+    message: "Auth router is working!",
+    timestamp: new Date().toISOString(),
+    path: req.path,
+    originalUrl: req.originalUrl,
+  })
+})
+
 router.post("/signup", signup)
 router.post("/login", login)
 router.post("/logout", logout)

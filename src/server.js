@@ -17,6 +17,13 @@ const __dirname = path.resolve()
 
 let dbConnectionPromise = null
 
+app.use((req, res, next) => {
+  console.log(`[v0] ${new Date().toISOString()} - ${req.method} ${req.url}`)
+  console.log(`[v0] Origin: ${req.headers.origin}`)
+  console.log(`[v0] User-Agent: ${req.headers["user-agent"]}`)
+  next()
+})
+
 app.use(
   cors({
     origin:
@@ -91,8 +98,11 @@ app.get("/api/health", async (req, res) => {
   }
 })
 
+console.log("[v0] Mounting auth routes at /api/auth")
 app.use("/api/auth", authRoutes)
+console.log("[v0] Mounting user routes at /api/users")
 app.use("/api/users", userRoutes)
+console.log("[v0] Mounting chat routes at /api/chat")
 app.use("/api/chat", chatRoutes)
 
 // This is now an API-only backend for Vercel deployment
