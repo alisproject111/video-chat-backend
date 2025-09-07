@@ -150,3 +150,13 @@ export async function onboard(req, res) {
     res.status(500).json({ message: "Internal Server Error" })
   }
 }
+
+export async function getMe(req, res) {
+  try {
+    console.log("[v0] getMe function called, user:", req.user)
+    res.status(200).json({ success: true, user: req.user })
+  } catch (error) {
+    console.log("Error in getMe controller", error.message)
+    res.status(500).json({ message: "Internal Server Error" })
+  }
+}
