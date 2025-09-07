@@ -21,7 +21,11 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? ["https://your-frontend-domain.vercel.app", "https://your-custom-domain.com"]
+        ? [
+            "https://video-chat-backend-lake.vercel.app", // Your backend domain
+            "https://your-frontend-app.vercel.app", // Replace with your actual frontend domain
+            "https://localhost:3000", // For local frontend development
+          ]
         : "http://localhost:5173",
     credentials: true,
   }),
