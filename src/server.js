@@ -24,9 +24,10 @@ app.use(
         ? [
             "https://video-chat-backend-lake.vercel.app", // Your backend domain
             "https://alis-video-chat.vercel.app", // Replace with your actual frontend domain
-            "https://localhost:3000", // For local frontend development
+            "http://localhost:3000", // For local frontend development
+            "http://localhost:5173", // Added Vite dev server
           ]
-        : "http://localhost:5173",
+        : ["http://localhost:5173", "http://localhost:3000"],
     credentials: true,
   }),
 )
@@ -51,6 +52,15 @@ app.get("/", (req, res) => {
   res.json({
     message: "MERN Backend API is running!",
     status: "healthy",
+    timestamp: new Date().toISOString(),
+  })
+})
+
+app.get("/test", (req, res) => {
+  res.json({
+    message: "Test endpoint working!",
+    cookies: req.cookies,
+    hasJwtCookie: !!req.cookies.jwt,
     timestamp: new Date().toISOString(),
   })
 })
