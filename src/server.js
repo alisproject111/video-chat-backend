@@ -15,6 +15,8 @@ const PORT = process.env.PORT || 5001
 
 const __dirname = path.resolve()
 
+let dbConnectionPromise = null
+
 app.use(
   cors({
     origin:
@@ -28,6 +30,19 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 
+app.use(async (req, res, next) => {
+  try {
+    if (!dbConnectionPromise) {
+      dbConnectionPromise = connectDB()
+    }
+    await dbConnectionPromise
+    next()
+  } catch (error) {
+    console.error("Database connection failed:", error)
+    next()
+  }
+})
+
 app.get("/", (req, res) => {
   res.json({
     message: "MERN Backend API is running!",
@@ -38,6 +53,11 @@ app.get("/", (req, res) => {
 
 app.get("/api/health", async (req, res) => {
   try {
+    if (!dbConnectionPromise) {
+      dbConnectionPromise = connectDB()
+    }
+    await dbConnectionPromise
+
     const dbStatus = await checkDatabaseConnection()
     res.json({
       status: "healthy",
@@ -78,8 +98,7 @@ if (process.env.NODE_ENV !== "production") {
     connectDB()
   })
 } else {
-  // For Vercel, connect to DB on startup
-  connectDB()
+  dbConnectionPromise = connectDB()
 }
 
 export default app
